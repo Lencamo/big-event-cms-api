@@ -7,13 +7,13 @@ const userService = {
   checkUser: (username, res) => {
     Pool.query(userModel.checkByUsername, [username], function (err, rows) {
       if (err) {
-        return res.send({ status: 1, message: err.message })
+        // return res.send({ code: 1, message: err.message })
+        return res.codeMsg(err)
       }
+
       if (rows.length > 0) {
-        return res.send({
-          status: 1,
-          message: '用户名被占用，请更换其他用户名！'
-        })
+        // return resp.send({ code: 1, message: '用户名被占用，请更换其他用户名！' })
+        return res.codeMsg('用户名被占用，请更换其他用户名！')
       }
     })
   },
@@ -23,18 +23,16 @@ const userService = {
     const [rows, fields] = await promisePool
       .query(userModel.addUser, [{ username: username, password: password }])
       .catch((err) => {
-        return res.send({ code: 1, message: err.message })
+        return res.codeMsg(err)
       })
     // console.log(rows.length)
     if (rows.length > 0) {
-      return res.send({ code: 1, message: '注册用户失败，请稍后再试！' })
+      return res.codeMsg('注册用户失败，请稍后再试！')
     }
 
     // 注册成功提示
-    res.send({
-      code: 0,
-      message: '注册成功！'
-    })
+    // res.send({ code: 0, message: '注册成功！' })
+    return res.codeMsg('注册成功！', 0)
   }
 }
 
