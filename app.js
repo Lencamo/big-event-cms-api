@@ -6,7 +6,8 @@ var logger = require('morgan')
 var cors = require('cors')
 
 var indexRouter = require('./routes/index')
-var demoRouter = require('./routes/demo')
+
+const userRouter = require('./routes/user')
 
 var app = express()
 
@@ -23,7 +24,9 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(cors())
 
 app.use('/', indexRouter)
-app.use('/connect', demoRouter)
+
+// 登录注册路由模块
+app.use('/api', userRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
