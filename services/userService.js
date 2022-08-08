@@ -20,19 +20,19 @@ const userService = {
 
   // 插入新用户（异步方式演示）
   addUser: async (username, password, res) => {
-    const [rows, fields] = await promisePool
+    const result = await promisePool
       .query(userModel.addUser, [{ username: username, password: password }])
       .catch((err) => {
         return res.codeMsg(err)
       })
-    // console.log(rows.length)
-    if (rows.length > 0) {
+    // console.log(result[0])
+    if (result[0].affectedRows !== 1) {
       return res.codeMsg('注册用户失败，请稍后再试！')
     }
 
     // 注册成功提示
     // res.send({ code: 0, message: '注册成功！' })
-    return res.codeMsg('注册成功！', 0)
+    res.codeMsg('注册成功！', 0)
   }
 }
 

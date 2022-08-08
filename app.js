@@ -4,6 +4,7 @@ var path = require('path')
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
 var cors = require('cors')
+const joi = require('joi')
 
 var indexRouter = require('./routes/index')
 
@@ -29,7 +30,7 @@ app.use(function (req, res, next) {
   res.codeMsg = function (err, code = 1) {
     res.send({
       // 状态
-      code: code,
+      code,
       // 状态描述，判断 err 是 错误对象 还是 字符串
       message: err instanceof Error ? err.message : err
     })
@@ -41,6 +42,16 @@ app.use('/', indexRouter)
 
 // 登录注册路由模块
 app.use('/api', userRouter)
+
+// express-joi对应的错误级别中间件
+app.use(function (err, req, res, next) {
+  // 若Joi 参数校验失败
+  if (err instanceof joi.ValidationError) {
+    return res.codeMsg(err)
+  }
+  // 其他未知错误
+  return res.codeMsg(err)
+})
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

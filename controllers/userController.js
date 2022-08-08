@@ -8,16 +8,17 @@ exports.addUser = (req, res) => {
   // 接收数据
   const { username, password } = req.body
 
-  // 1、合法性校验（必传参数）
-  if (!username || !password) {
-    return res.codeMsg('用户名或密码不能为空')
-  }
+  // 1、合法性校验
+  // 1.1、（必传参数）
+  // if (!username || !password) {
+  //   return res.codeMsg('用户名或密码不能为空')
+  // }
 
   // 2、用户名是否被占用
   userService.checkUser(username, res)
 
   // 3、插入新用户
-  // 3.1、对密码加密
+  // 3.1、（对密码加密）
   const encryptPassword = bcrypt.hashSync(password, 10)
   // console.log(encryptPassword)
 
