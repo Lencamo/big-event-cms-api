@@ -2,6 +2,8 @@ const { promisePool, Pool } = require('../models/db')
 
 const userModel = require('../models/userModel')
 
+const JWT = require('../utils/JWT')
+
 // 导入 bcryptjs 加密包
 const bcrypt = require('bcryptjs')
 
@@ -57,8 +59,21 @@ const userService = {
         return res.codeMsg('密码错误！')
       }
 
+      // 🚩设置token签名
+      // 1、生成token
+      const user = { ...rows[0], password: '', user_pic: '' } // 利用展开运算符的方式排出密码、照片等敏感信息
+      const tokenStr = JWT.generate(user)
+
+      // 2、发送token到客户端（header方式）
+      // res.header('Authorization', token)
+      res.send({
+        code: 0,
+        message: '登录成功',
+        token: 'Bearer ' + tokenStr
+      })
+
       // 登录成功
-      res.codeMsg('登录成功', 0)
+      // res.codeMsg('登录成功', 0)
     })
   }
 }

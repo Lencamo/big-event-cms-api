@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser')
 var logger = require('morgan')
 var cors = require('cors')
 const joi = require('joi')
+const expressJWT = require('express-jwt')
+const jwtConfig = require('./config/jwt.config')
 
 var indexRouter = require('./routes/index')
 
@@ -38,17 +40,26 @@ app.use(function (req, res, next) {
   next()
 })
 
+// 1、注册解析token的中间件（token过期校验、白名单放行）
+app.use(
+  expressJWT({ secret: jwtConfig.jwtSecretKey }).unless({ path: [/^\/api\//] })
+)
+
 app.use('/', indexRouter)
 
 // 登录注册路由模块
 app.use('/api', userRouter)
 
-// express-joi对应的错误级别中间件
+// 错误级别中间件
 app.use(function (err, req, res, next) {
-  // 若Joi 参数校验失败
+  // express-joi：Joi 参数校验失败
   if (err instanceof joi.ValidationError) {
     return res.codeMsg(err)
   }
+
+  // 2、express-jwt：捕获身份认证失败的错误
+  if (err.name === 'UnauthorizedError') return res.codeMsg('身份认证失败！')
+
   // 其他未知错误
   return res.codeMsg(err)
 })
