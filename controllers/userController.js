@@ -3,7 +3,7 @@ const userService = require('../services/userService')
 // 导入 bcryptjs 加密包
 const bcrypt = require('bcryptjs')
 
-// 1、注册
+// 注册
 exports.addUser = (req, res) => {
   // 接收数据
   const { username, password } = req.body
@@ -18,14 +18,20 @@ exports.addUser = (req, res) => {
   userService.checkUser(username, res)
 
   // 3、插入新用户
-  // 3.1、（对密码加密）
+  // 3.1、（使用✨bcrypt.hashSync()对密码加密）
   const encryptPassword = bcrypt.hashSync(password, 10)
   // console.log(encryptPassword)
 
   userService.addUser(username, encryptPassword, res)
 }
 
-// 2、登录
+// 登录
 exports.loginUser = (req, res) => {
-  res.send('login ok')
+  // 接收数据
+  const { username, password } = req.body
+
+  // 1、用户登录
+  userService.loginUser(username, password, res)
+
+  // res.send('login ok')
 }

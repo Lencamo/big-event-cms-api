@@ -18,7 +18,7 @@ const password = joi
   .required()
 
 // 注册表单的验证规则对象
-exports.reg_schema = {
+exports.reg_login_schema = {
   // 对 req.body 中的数据进行验证
   body: {
     username,
