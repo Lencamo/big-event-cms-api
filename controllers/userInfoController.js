@@ -20,3 +20,10 @@ exports.updatePassword = (req, res) => {
   // 2、数据库中更新新密码
   userInfoService.updatePassword(req, res)
 }
+
+// 更新-用户头像
+exports.updateAvatar = (req, res) => {
+  userInfoService.updateAvatar(req, res)
+
+  // res.codeMsg('ok')
+}

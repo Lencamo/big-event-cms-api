@@ -7,7 +7,8 @@ const userInfoController = require('../controllers/userInfoController')
 const expressJoi = require('../schemas//express-joi')
 const {
   updateUserInfo_schema,
-  updatePassword_schema
+  updatePassword_schema,
+  updateAvatar_schema
 } = require('../schemas/userInfoSchema')
 
 // 1、获取-用户基本资料
@@ -28,5 +29,10 @@ router.patch(
 )
 
 // 4、更新-用户头像
+router.patch(
+  '/update/avatar',
+  expressJoi(updateAvatar_schema),
+  userInfoController.updateAvatar
+)
 
 module.exports = router

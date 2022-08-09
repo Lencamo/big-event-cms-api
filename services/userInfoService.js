@@ -92,6 +92,26 @@ const userInfoService = {
 
     // 更新成功提示
     res.codeMsg('更新密码成功', 0)
+  },
+
+  // 更新-用户头像
+  updateAvatar: (req, res) => {
+    Pool.query(
+      userInfoModel.updateAvatar,
+      [req.body.avatar, req.user.data.id],
+      function (err, rows) {
+        if (err) {
+          return res.codeMsg(err)
+        }
+
+        if (rows.affectedRows !== 1) {
+          return res.codeMsg('更新头像失败！')
+        }
+
+        // 更新成功提示
+        res.codeMsg('更新头像成功！', 0)
+      }
+    )
   }
 }
 
