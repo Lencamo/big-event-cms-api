@@ -57,7 +57,7 @@ app.use('/my', userInfoRouter)
 app.use(function (err, req, res, next) {
   // express-joi：Joi 参数校验失败
   if (err instanceof joi.ValidationError) {
-    return res.codeMsg(err)
+    return res.codeMsg(err, 2)
   }
 
   // 2、express-jwt：捕获身份认证失败的错误

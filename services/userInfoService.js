@@ -26,6 +26,22 @@ const userInfoService = {
       message: '获取用户基本信息成功！',
       data: result[0]
     })
+  },
+
+  // 更新-用户基本资料
+  updateUserInfo: async (req, res) => {
+    const result = await promisePool
+      .query(userInfoModel.updateUserInfo, [req.body, req.body.id])
+      .catch((err) => {
+        return res.codeMsg(err)
+      })
+
+    if (result[0].affectedRows !== 1) {
+      return res.codeMsg('修改用户基本信息失败！')
+    }
+
+    // 更新成功提示
+    res.codeMsg('修改用户信息成功！', 0)
   }
 }
 
