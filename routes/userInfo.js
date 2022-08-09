@@ -5,7 +5,10 @@ const userInfoController = require('../controllers/userInfoController')
 
 // 合法性校验
 const expressJoi = require('../schemas//express-joi')
-const { updateUserInfo_schema } = require('../schemas/userInfoSchema')
+const {
+  updateUserInfo_schema,
+  updatePassword_schema
+} = require('../schemas/userInfoSchema')
 
 // 1、获取-用户基本资料
 router.get('/userinfo', userInfoController.getUserInfo)
@@ -17,8 +20,13 @@ router.put(
   userInfoController.updateUserInfo
 )
 
-// 3、更新-用户头像
+// 3、更新-用户密码
+router.patch(
+  '/updatepwd',
+  expressJoi(updatePassword_schema),
+  userInfoController.updatePassword
+)
 
-// 4、更新-用户密码
+// 4、更新-用户头像
 
 module.exports = router

@@ -9,3 +9,14 @@ exports.getUserInfo = (req, res) => {
 exports.updateUserInfo = (req, res) => {
   userInfoService.updateUserInfo(req, res)
 }
+
+// 更新 - 用户密码
+exports.updatePassword = (req, res) => {
+  // 1、密码属于敏感信息
+  // - 要确保该用户真实存在（根据id）
+  // - 要确保旧密码的正确性
+  userInfoService.checkUserID(req, res)
+
+  // 2、数据库中更新新密码
+  userInfoService.updatePassword(req, res)
+}
