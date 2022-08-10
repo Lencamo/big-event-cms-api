@@ -12,6 +12,7 @@ var indexRouter = require('./routes/index')
 
 const userRouter = require('./routes/user')
 const userInfoRouter = require('./routes/userInfo')
+const articleCaseRouter = require('./routes/articleCase')
 
 var app = express()
 
@@ -50,8 +51,10 @@ app.use('/', indexRouter)
 
 // 登录注册路由模块
 app.use('/api', userRouter)
-// 后台路由模块
+// 用户相关接口
 app.use('/my', userInfoRouter)
+// 文章分类接口
+app.use('/my/cate', articleCaseRouter)
 
 // 错误级别中间件
 app.use(function (err, req, res, next) {
