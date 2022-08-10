@@ -7,7 +7,8 @@ const expressJoi = require('../schemas/express-joi')
 const {
   addCate_schema,
   deleteCate_schema,
-  getCate_schema
+  getCate_schema,
+  updateCate_schema
 } = require('../schemas/articleCaseSchema')
 
 // 1、获取-文章分类（查询所有）
@@ -28,6 +29,11 @@ router.get(
 )
 
 // 4、更新-文章分类
+router.put(
+  '/info',
+  expressJoi(updateCate_schema),
+  articleCaseController.updateCate
+)
 
 // 5、删除-文章分类
 router.delete(

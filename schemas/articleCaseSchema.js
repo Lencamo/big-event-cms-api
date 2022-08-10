@@ -26,3 +26,12 @@ exports.getCate_schema = {
     id
   }
 }
+
+// 更新 - 文章分类
+exports.updateCate_schema = {
+  body: {
+    id,
+    cate_name,
+    cate_alias
+  }
+}

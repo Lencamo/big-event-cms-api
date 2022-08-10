@@ -27,3 +27,12 @@ exports.delArtCateList = (req, res) => {
 exports.getArticleDetail = (req, res) => {
   articleCaseService.getArticleDetail(req, res)
 }
+
+// 更新 - 文章分类
+exports.updateCate = (req, res) => {
+  // 1、分类名、别名查重
+  articleCaseService.checkArtCateAll(req, res)
+
+  // 2、更新文章分类
+  articleCaseService.updateCate(req, res)
+}
