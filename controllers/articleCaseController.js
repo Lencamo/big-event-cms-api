@@ -13,3 +13,12 @@ exports.addArtCate = (req, res) => {
   // 2、新增文章分类
   articleCaseService.addArtCate(req, res)
 }
+
+// 删除 - 文章分类
+exports.delArtCateList = (req, res) => {
+  // 1、分类存在性验证
+  articleCaseService.checkCateById(req, res)
+
+  // 2、删除文章分类
+  articleCaseService.delArtCateList(req, res)
+}

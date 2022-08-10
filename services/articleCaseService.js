@@ -56,6 +56,32 @@ const articleCaseService = {
 
       res.codeMsg('新增文章分类成功！', 0)
     })
+  },
+
+  // 删除 - 文章分类：分类是否存在
+  checkCateById: (req, res) => {
+    Pool.query(
+      articleCaseModel.checkById,
+      [req.query.id],
+      function (err, rows) {
+        if (err) return res.codeMsg(err)
+
+        if (rows.length === 0) {
+          return res.codeMsg('要删除的分类不存在！')
+        }
+      }
+    )
+  },
+
+  // 删除 - 文章分类：删除文章分类
+  delArtCateList: (req, res) => {
+    Pool.query(articleCaseModel.delCase, [req.query.id], function (err, rows) {
+      if (err) return res.codeMsg(err)
+
+      if (rows.affectedRows !== 1) return res.codeMsg('删除文章分类失败！')
+
+      res.codeMsg('删除文章分类成功！', 0)
+    })
   }
 }
 

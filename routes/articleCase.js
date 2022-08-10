@@ -4,7 +4,10 @@ const router = express.Router()
 const articleCaseController = require('../controllers/articleCaseController')
 
 const expressJoi = require('../schemas/express-joi')
-const { addCate_schema } = require('../schemas/articleCaseSchema')
+const {
+  addCate_schema,
+  deleteCate_schema
+} = require('../schemas/articleCaseSchema')
 
 // 1、获取-文章分类（查询所有）
 router.get('/list', articleCaseController.getArtCateList)
@@ -21,5 +24,10 @@ router.post(
 // 4、更新-文章分类
 
 // 5、删除-文章分类
+router.delete(
+  '/del',
+  expressJoi(deleteCate_schema),
+  articleCaseController.delArtCateList
+)
 
 module.exports = router
