@@ -82,6 +82,26 @@ const articleCaseService = {
 
       res.codeMsg('删除文章分类成功！', 0)
     })
+  },
+
+  // 获取 - 文章分类详情
+  getArticleDetail: (req, res) => {
+    Pool.query(
+      articleCaseModel.selectById,
+      [req.query.id],
+      function (err, rows) {
+        if (err) return res.codeMsg(err)
+
+        console.log(rows)
+        if (rows.length !== 1) return res.codeMsg('获取文章分类数据失败！')
+
+        res.send({
+          code: 0,
+          message: '获取文章分类成功！',
+          data: rows[0]
+        })
+      }
+    )
   }
 }
 

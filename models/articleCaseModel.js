@@ -5,7 +5,8 @@ const articleCaseModel = {
     'select * from ev_article_cate where cate_name=? or cate_alias=?',
   addCase: 'insert into ev_article_cate set ?',
   delCase: 'update ev_article_cate set is_delete=1 where id=?',
-  checkById: 'select * from ev_article_cate where id=?'
+  checkById: 'select * from ev_article_cate where id=?',
+  selectById: 'select * from ev_article_cate where id=?'
 }
 
 module.exports = articleCaseModel

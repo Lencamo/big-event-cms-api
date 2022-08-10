@@ -6,7 +6,8 @@ const articleCaseController = require('../controllers/articleCaseController')
 const expressJoi = require('../schemas/express-joi')
 const {
   addCate_schema,
-  deleteCate_schema
+  deleteCate_schema,
+  getCate_schema
 } = require('../schemas/articleCaseSchema')
 
 // 1、获取-文章分类（查询所有）
@@ -20,6 +21,11 @@ router.post(
 )
 
 // 3、获取-文章分类详情（根据id值）
+router.get(
+  '/info',
+  expressJoi(getCate_schema),
+  articleCaseController.getArticleDetail
+)
 
 // 4、更新-文章分类
 

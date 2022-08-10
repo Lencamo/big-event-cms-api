@@ -19,3 +19,10 @@ exports.deleteCate_schema = {
     id
   }
 }
+
+// 获取 - 文章分类详情
+exports.getCate_schema = {
+  query: {
+    id
+  }
+}

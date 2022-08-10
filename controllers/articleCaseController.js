@@ -22,3 +22,8 @@ exports.delArtCateList = (req, res) => {
   // 2、删除文章分类
   articleCaseService.delArtCateList(req, res)
 }
+
+// 获取 - 文章分类详情
+exports.getArticleDetail = (req, res) => {
+  articleCaseService.getArticleDetail(req, res)
+}
