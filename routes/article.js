@@ -5,7 +5,10 @@ const articleController = require('../controllers/articleController')
 
 // 1、合法性校验
 const expressJoi = require('../schemas/express-joi')
-const { addArticle_schema } = require('../schemas/articleSchema')
+const {
+  addArticle_schema,
+  getArticleList_schema
+} = require('../schemas/articleSchema')
 
 // 2、解析multipart / form-data数据（主要是图片）
 const multer = require('multer')
@@ -22,6 +25,11 @@ router.post(
 )
 
 // 2、获取-文章列表
+router.get(
+  '/list',
+  expressJoi(getArticleList_schema),
+  articleController.getArticleList
+)
 
 // 3、获取-文章详情
 

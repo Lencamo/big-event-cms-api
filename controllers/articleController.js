@@ -10,3 +10,13 @@ exports.uploadArticle = (req, res) => {
   // 2、发布文章
   articleService.uploadArticle(req, res)
 }
+
+// 获取 - 文章列表
+exports.getArticleList = (req, res) => {
+  // 1、获取文章条数total（待解决问题）
+  // const totalValue = articleService.getArticleTotal(req, res)
+  // console.log(totalValue)
+
+  // 2、获取文章列表相关数据
+  articleService.getArticleList(req, res)
+}
