@@ -14,6 +14,7 @@ const userRouter = require('./routes/user')
 const userInfoRouter = require('./routes/userInfo')
 const articleCaseRouter = require('./routes/articleCase')
 const articleRouter = require('./routes/article')
+const menusRouter = require('./routes/layout')
 
 var app = express()
 
@@ -58,6 +59,8 @@ app.use('/my', userInfoRouter)
 app.use('/my/cate', articleCaseRouter)
 // 文章管理接口
 app.use('/my/article', articleRouter)
+// 侧边栏布局
+app.use('/my/menus', menusRouter)
 
 // 错误级别中间件
 app.use(function (err, req, res, next) {
