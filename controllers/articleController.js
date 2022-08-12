@@ -20,3 +20,13 @@ exports.getArticleList = (req, res) => {
   // 2、获取文章列表相关数据
   articleService.getArticleList(req, res)
 }
+
+// 获取 - 文章详情
+exports.getArticleDetail = (req, res) => {
+  articleService.getArticleDetail(req, res)
+}
+
+// 删除 - 文章
+exports.delArticle = (req, res) => {
+  articleService.delArticle(req, res)
+}

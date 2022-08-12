@@ -7,7 +7,8 @@ const articleController = require('../controllers/articleController')
 const expressJoi = require('../schemas/express-joi')
 const {
   addArticle_schema,
-  getArticleList_schema
+  getArticleList_schema,
+  get_delArticle_schema
 } = require('../schemas/articleSchema')
 
 // 2、解析multipart / form-data数据（主要是图片）
@@ -32,7 +33,17 @@ router.get(
 )
 
 // 3、获取-文章详情
+router.get(
+  '/info',
+  expressJoi(get_delArticle_schema),
+  articleController.getArticleDetail
+)
 
 // 4、删除-文章
+router.delete(
+  '/info',
+  expressJoi(get_delArticle_schema),
+  articleController.delArticle
+)
 
 module.exports = router

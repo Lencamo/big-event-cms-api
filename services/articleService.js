@@ -54,6 +54,35 @@ const articleService = {
         })
       }
     )
+  },
+
+  // 获取 - 文章详情
+  getArticleDetail: (req, res) => {
+    Pool.query(
+      articleModel.selectArtById,
+      [req.query.id],
+      function (err, rows) {
+        if (err) return res.codeMsg(err)
+
+        if (rows.length !== 1) return res.codeMsg('没有查到对应的数据！')
+
+        res.send({
+          code: 0,
+          message: '获取文章成功！',
+          data: rows[0]
+        })
+      }
+    )
+  },
+
+  delArticle: (req, res) => {
+    Pool.query(articleModel.delArticle, [req.query.id], function (err, rows) {
+      if (err) return res.codeMsg(err)
+
+      if (rows.affectedRows !== 1) return res.codeMsg('您要删除的文章不存在！')
+
+      res.codeMsg('删除成功！', 0)
+    })
   }
 }
 
