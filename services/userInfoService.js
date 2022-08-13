@@ -17,34 +17,36 @@ const userInfoService = {
         return res.codeMsg(err)
       })
 
-    // console.log(result[0])
-
     if (result[0].length !== 1) {
       return res.codeMsg('获取用户信息失败！')
     }
 
     // 获取成功提示
-    res.send({
+    return res.send({
       code: 0,
       message: '获取用户基本信息成功！',
-      data: result[0]
+      data: result[0][0]
     })
   },
 
   // 更新-用户基本资料
-  updateUserInfo: async (req, res) => {
-    const result = await promisePool
-      .query(userInfoModel.updateUserInfo, [req.body, req.body.id])
-      .catch((err) => {
-        return res.codeMsg(err)
-      })
+  updateUserInfo: (req, res) => {
+    Pool.query(
+      userInfoModel.updateUserInfo,
+      [req.body, req.body.id],
+      function (err, rows) {
+        if (err) {
+          return res.codeMsg(err)
+        }
 
-    if (result[0].affectedRows !== 1) {
-      return res.codeMsg('修改用户基本信息失败！')
-    }
+        if (rows.affectedRows !== 1) {
+          return res.codeMsg('修改用户基本信息失败！')
+        }
 
-    // 更新成功提示
-    res.codeMsg('修改用户信息成功！', 0)
+        // 更新成功提示
+        return res.codeMsg('修改用户信息成功！', 0)
+      }
+    )
   },
 
   // 更新 - 用户密码：用户真实存在判断
@@ -75,27 +77,33 @@ const userInfoService = {
   },
 
   // 更新 - 用户密码：更新新密码
-  updatePassword: async (req, res) => {
+  updatePassword: (req, res) => {
     // 先使用✨bcrypt.hashSync()对新密码加密
     const new_pwd = bcrypt.hashSync(req.body.new_pwd, 10)
 
+    console.log(req.body.new_pwd)
     // 然后更新密码
-    const result = await promisePool
-      .query(userInfoModel.updatePassword, [new_pwd, req.user.data.id])
-      .catch((err) => {
-        return res.codeMsg(err)
-      })
+    Pool.query(
+      userInfoModel.updatePassword,
+      [new_pwd, req.user.data.id],
+      function (err, rows) {
+        if (err) {
+          return res.codeMsg(err)
+        }
 
-    if (result[0].affectedRows !== 1) {
-      return res.codeMsg('更新密码失败！')
-    }
+        if (rows.affectedRows !== 1) {
+          return res.codeMsg('更新密码失败！')
+        }
 
-    // 更新成功提示
-    res.codeMsg('更新密码成功', 0)
+        // 更新成功提示
+        return res.codeMsg('更新密码成功', 0)
+      }
+    )
   },
 
   // 更新-用户头像
   updateAvatar: (req, res) => {
+    console.log(req.body)
     Pool.query(
       userInfoModel.updateAvatar,
       [req.body.avatar, req.user.data.id],
@@ -109,7 +117,7 @@ const userInfoService = {
         }
 
         // 更新成功提示
-        res.codeMsg('更新头像成功！', 0)
+        return res.codeMsg('更新头像成功！', 0)
       }
     )
   }

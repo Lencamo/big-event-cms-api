@@ -23,21 +23,25 @@ const userService = {
     })
   },
 
-  // 插入新用户（异步方式演示）
-  addUser: async (username, password, res) => {
-    const result = await promisePool
-      .query(userModel.addUser, [{ username: username, password: password }])
-      .catch((err) => {
-        return res.codeMsg(err)
-      })
-    // console.log(result[0])
-    if (result[0].affectedRows !== 1) {
-      return res.codeMsg('注册用户失败，请稍后再试！')
-    }
+  // 插入新用户
+  addUser: (username, password, res) => {
+    Pool.query(
+      userModel.addUser,
+      [{ username: username, password: password }],
+      function (err, rows) {
+        if (err) {
+          return res.codeMsg(err)
+        }
 
-    // 注册成功提示
-    // res.send({ code: 0, message: '注册成功！' })
-    res.codeMsg('注册成功！', 0)
+        if (rows.affectedRows !== 1) {
+          return res.codeMsg('注册用户失败，请稍后再试！')
+        }
+
+        // 注册成功提示
+        // res.send({ code: 0, message: '注册成功！' })
+        return res.codeMsg('注册成功！', 0)
+      }
+    )
   },
 
   // 用户登录
@@ -66,7 +70,7 @@ const userService = {
 
       // 2、发送token到客户端（header方式）
       // res.header('Authorization', token)
-      res.send({
+      return res.send({
         code: 0,
         message: '登录成功',
         token: 'Bearer ' + tokenStr

@@ -10,7 +10,7 @@ const articleCaseService = {
         return res.codeMsg(err)
       }
 
-      res.send({
+      return res.send({
         code: 0,
         message: '获取文章分类列表成功！',
         data: rows
@@ -26,20 +26,33 @@ const articleCaseService = {
       function (err, rows) {
         if (err) return res.codeMsg(err)
 
-        // 分类名称 和 分类别名 都被占用
-        if (rows.length === 2) return res.codeMsg('此分类已存在！')
+        // 1、分类名称 和 分类别名 都被占用
+        if (rows.length === 2) return res.codeMsg('此分类已存在1！')
 
         if (
           rows.length === 1 &&
           rows[0].cate_name === req.body.cate_name &&
           rows[0].cate_alias === req.body.cate_alias
         ) {
-          return res.codeMsg('此分类已存在！')
+          // 处理已删除过的文章类名✨
+          Pool.query(
+            articleCaseModel.addCasePro,
+            [req.body.cate_name, req.body.cate_alias],
+            function (err, rows) {
+              if (err) return res.codeMsg(err)
+
+              if (rows.affectedRows !== 1) {
+                return res.codeMsg('新增文章分类失败！')
+              }
+            }
+          )
+          return res.codeMsg('新增文章分类成功！', 0)
+          // return res.codeMsg('此分类已存在2！')
         }
 
-        // 分类名称 或 分类别名 被占用
+        // 2、分类名称 或 分类别名 被占用
         if (rows.length === 1 && rows[0].cate_name === req.body.cate_name)
-          return res.codeMsg('此分类已存在！')
+          return res.codeMsg('此分类已存在3！')
 
         if (rows.length === 1 && rows[0].cate_alias === req.body.cate_alias)
           return res.codeMsg('分类别名被占用，请更换后重试！')
@@ -54,7 +67,7 @@ const articleCaseService = {
 
       if (rows.affectedRows !== 1) return res.codeMsg('新增文章分类失败！')
 
-      res.codeMsg('新增文章分类成功！', 0)
+      return res.codeMsg('新增文章分类成功！', 0)
     })
   },
 
@@ -80,7 +93,7 @@ const articleCaseService = {
 
       if (rows.affectedRows !== 1) return res.codeMsg('删除文章分类失败！')
 
-      res.codeMsg('删除文章分类成功！', 0)
+      return res.codeMsg('删除文章分类成功！', 0)
     })
   },
 
@@ -95,7 +108,7 @@ const articleCaseService = {
         console.log(rows)
         if (rows.length !== 1) return res.codeMsg('获取文章分类数据失败！')
 
-        res.send({
+        return res.send({
           code: 0,
           message: '获取文章分类成功！',
           data: rows[0]
@@ -143,7 +156,7 @@ const articleCaseService = {
 
         if (rows.affectedRows !== 1) return res.codeMsg('更新分类信息失败！')
 
-        res.codeMsg('更新分类信息成功！', 0)
+        return res.codeMsg('更新分类信息成功！', 0)
       }
     )
   }

@@ -3,7 +3,11 @@ const articleCaseModel = {
     'select * from ev_article_cate where is_delete=0 order by id asc',
   selectCheck:
     'select * from ev_article_cate where cate_name=? or cate_alias=?',
+  // checkIs_Delete:
+  // 'select * from ev_article_cate where is_delete=1 and cate_name=? and cate_alias=?',
   addCase: 'insert into ev_article_cate set ?',
+  addCasePro:
+  'update ev_article_cate set is_delete=0 where cate_name=? and cate_alias=?',
   delCase: 'update ev_article_cate set is_delete=1 where id=?',
   checkById: 'select * from ev_article_cate where id=?',
   selectById: 'select * from ev_article_cate where id=?',

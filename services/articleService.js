@@ -22,7 +22,7 @@ const articleService = {
 
       if (rows.affectedRows !== 1) return res.codeMsg('发布文章失败！')
 
-      res.codeMsg('发布文章成功！', 0)
+      return res.codeMsg('发布文章成功！', 0)
     })
   },
 
@@ -34,22 +34,32 @@ const articleService = {
       if (rows.length !== 1) return res.codeMsg('获取文章列表失败！')
 
       // console.log(rows[0].total)
-      return rows[0].total
+      // return rows[0].total
     })
   },
 
   // 获取 - 文章列表：获取数据
   getArticleList: (req, res) => {
+    // 当前页的第一个索引值
+    const pageIndex = (req.query.pagenum - 1) * req.query.pagesize
+
     Pool.query(
       articleModel.selectListPro,
-      [req.query.pagenum, req.query.pagesize],
+      [pageIndex, req.query.pagesize],
       function (err, rows) {
         if (err) return res.codeMsg(err)
 
-        res.send({
+        var total = 0
+        if (rows.length === 0) {
+          total = 0
+        } else {
+          total = rows[0].total
+        }
+
+        return res.send({
           code: 0,
           message: '获取文章列表成功！',
-          total: rows[0].total,
+          total: total,
           data: rows
         })
       }
@@ -66,7 +76,7 @@ const articleService = {
 
         if (rows.length !== 1) return res.codeMsg('没有查到对应的数据！')
 
-        res.send({
+        return res.send({
           code: 0,
           message: '获取文章成功！',
           data: rows[0]
@@ -81,7 +91,7 @@ const articleService = {
 
       if (rows.affectedRows !== 1) return res.codeMsg('您要删除的文章不存在！')
 
-      res.codeMsg('删除成功！', 0)
+      return res.codeMsg('删除成功！', 0)
     })
   }
 }
