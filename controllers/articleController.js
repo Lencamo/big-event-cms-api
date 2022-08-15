@@ -17,7 +17,7 @@ exports.getArticleList = (req, res) => {
   // const totalValue = articleService.getArticleTotal(req, res)
   // console.log(totalValue)
 
-  // 2、获取文章列表相关数据
+  // 2、获取文章列表相关数据（修复筛选功能✨）
   articleService.getArticleList(req, res)
 }
 

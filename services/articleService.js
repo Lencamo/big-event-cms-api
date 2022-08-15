@@ -38,13 +38,13 @@ const articleService = {
     })
   },
 
-  // 获取 - 文章列表：获取数据
+  // 获取 - 文章列表：获取数据（附加筛选功能✨）
   getArticleList: (req, res) => {
     // 当前页的第一个索引值
     const pageIndex = (req.query.pagenum - 1) * req.query.pagesize
 
     Pool.query(
-      articleModel.selectListPro,
+      articleModel.selectListPro(req, res),
       [pageIndex, req.query.pagesize],
       function (err, rows) {
         if (err) return res.codeMsg(err)
@@ -85,6 +85,7 @@ const articleService = {
     )
   },
 
+  // 删除 - 文章
   delArticle: (req, res) => {
     Pool.query(articleModel.delArticle, [req.query.id], function (err, rows) {
       if (err) return res.codeMsg(err)

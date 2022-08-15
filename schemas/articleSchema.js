@@ -10,6 +10,9 @@ const pagesize = joi.number().integer().required()
 
 const id = joi.number().integer().min(1).required()
 
+const cate_idR = joi.required()
+const stateR = joi.string().valid('已发布', '草稿', '').required()
+
 // 发布 - 文章
 exports.addArticle_schema = {
   body: {
@@ -24,7 +27,9 @@ exports.addArticle_schema = {
 exports.getArticleList_schema = {
   query: {
     pagenum,
-    pagesize
+    pagesize,
+    cate_id: cate_idR,
+    state: stateR
   }
 }
 
