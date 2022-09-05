@@ -1,8 +1,9 @@
-const { Pool } = require('../models/db')
+const { Pool, promisePool } = require('../models/db')
 
 const articleModel = require('../models/articleModel')
 
 const path = require('path')
+const { setTimeout } = require('timers/promises')
 
 const articleService = {
   // 发布 - 文章
@@ -27,39 +28,33 @@ const articleService = {
   },
 
   // 获取 - 文章列表：文章条数total
-  getArticleTotal: (req, res) => {
-    Pool.query(articleModel.countAll, function (err, rows) {
-      if (err) return res.codeMsg(err)
+  getArticleTotal: async (req, res) => {
+    const [rows] = await promisePool
+      .query(articleModel.countAll)
+      .catch((err) => {
+        if (err) return res.codeMsg(err)
+        if (rows.length !== 1) return res.codeMsg('获取文章列表失败！')
+      })
 
-      if (rows.length !== 1) return res.codeMsg('获取文章列表失败！')
-
-      // console.log(rows[0].total)
-      // return rows[0].total
-    })
+    // console.log(rows)
+    return rows[0].total
   },
 
   // 获取 - 文章列表：获取数据（附加筛选功能✨）
-  getArticleList: (req, res) => {
+  getArticleList: (req, res, totalValue) => {
     // 当前页的第一个索引值
     const pageIndex = (req.query.pagenum - 1) * req.query.pagesize
 
     Pool.query(
-      articleModel.selectListPro(req, res),
+      articleModel.selectList,
       [pageIndex, req.query.pagesize],
       function (err, rows) {
         if (err) return res.codeMsg(err)
 
-        var total = 0
-        if (rows.length === 0) {
-          total = 0
-        } else {
-          total = rows[0].total
-        }
-
         return res.send({
           code: 0,
           message: '获取文章列表成功！',
-          total: total,
+          total: totalValue,
           data: rows
         })
       }

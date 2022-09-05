@@ -12,13 +12,13 @@ exports.uploadArticle = (req, res) => {
 }
 
 // 获取 - 文章列表
-exports.getArticleList = (req, res) => {
-  // 1、获取文章条数total（待解决问题）
-  // const totalValue = articleService.getArticleTotal(req, res)
+exports.getArticleList = async (req, res) => {
+  // 1、获取文章条数total
+  const totalValue = await articleService.getArticleTotal(req, res)
   // console.log(totalValue)
 
   // 2、获取文章列表相关数据（修复筛选功能✨）
-  articleService.getArticleList(req, res)
+  articleService.getArticleList(req, res, totalValue)
 }
 
 // 获取 - 文章详情
