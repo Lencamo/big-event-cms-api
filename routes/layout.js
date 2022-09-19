@@ -45,6 +45,11 @@ router.get('/', function (req, res) {
             icon: 'el-icon-camera'
           },
           {
+            indexPath: '/user-avatarPro',
+            title: '更换头像',
+            icon: 'el-icon-camera-solid'
+          },
+          {
             indexPath: '/user-pwd',
             title: '重置密码',
             icon: 'el-icon-key'
